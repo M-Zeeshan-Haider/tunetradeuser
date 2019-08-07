@@ -5,6 +5,7 @@ import { KYCComponent } from './KYC-group/kyc/kyc.component';
 import { ProfileComponent } from './profile-group/profile/profile.component';
 import { CreateTokenComponent } from './component-createtoken/create-token/create-token.component';
 import { MainCreatetokenComponent } from './component-createtoken/main-createtoken/main-createtoken.component';
+import { CreateTokenlistComponent } from './tokenlist/create-tokenlist/create-tokenlist.component';
 
 export const UserRoutes: Routes = [
     {
@@ -35,6 +36,11 @@ export const UserRoutes: Routes = [
             {
                 path: 'tokenmain',
                 component: MainCreatetokenComponent
+            }
+            ,
+            {
+                path: 'tokenlist',
+                component: CreateTokenlistComponent
             }
         ]
     }

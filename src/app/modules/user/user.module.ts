@@ -55,6 +55,7 @@ import { DetPasswordComponent } from './profile-group/comps-prof/detail-group/co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateTokenComponent } from './component-createtoken/create-token/create-token.component';
 import { MainCreatetokenComponent } from './component-createtoken/main-createtoken/main-createtoken.component';
+import { CreateTokenlistComponent } from './tokenlist/create-tokenlist/create-tokenlist.component';
 
 @NgModule({
   declarations:
@@ -84,6 +85,7 @@ import { MainCreatetokenComponent } from './component-createtoken/main-createtok
     DetPasswordComponent,
     CreateTokenComponent,
     MainCreatetokenComponent,
+    CreateTokenlistComponent,
   ],
   imports: [
     CommonModule,
