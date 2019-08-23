@@ -1,22 +1,68 @@
-<div class="background">
-    <div class="custom-container">
-        <div class="image-wrap">
-            <img src="../../../../assets/create.png"  alt="">
-        </div>
-        <div class="heading">
-            Sign in
-        </div>
-        <div class="signup-text mb-4">
-            with your tokenWiz Account
-        </div>
-        <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
-            <div class="form-group mb-4">
-                <input type="text" formControlName="userId" placeholder="Enter userId" class="form-control">
+<div id="login" *ngIf="!loginAuthorized">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+  
+          <!-- Loader -->
+          <div id="spinner" *ngIf="loading">
+            <div style="color: #59c9f0" class="la-square-jelly-box la-2x">
+              <div></div>
+              <div></div>
             </div>
-            <div class="form-group mb-4">
-                <input type="password" formControlName="userPassword" class="form-control" placeholder="Enter Password">
+          </div>
+  
+          <!-- Login Form Wrapper  -->
+          <div id="login-form">
+            
+            <!-- APP LOGO -->
+            <div id="logo">
+              <img src="/assets/tunetrade/TuneTrade-coin.png" alt="Logo" />
             </div>
-            <div class="row mb-4">
+            <h4 class="mx-auto adminHeading" style="text-align: center">User Panel</h4>
+            <!-- Login Form -->
+            <form
+              (ngSubmit)="loginF.form.valid && login(loginF.form)"
+              #loginF="ngForm"
+              novalidate
+            >
+              <div class="form-group">
+                <input
+                  type="tel"
+                  autocomplete="on"
+                  name="contactNumber"
+                  id="contactno"
+                  class="form-control"
+                  placeholder="Enter your user id"
+                  [(ngModel)]="loginObj.userId"
+                  #contactNo="ngModel"
+                  min="9"
+                  max="99"
+                  required
+                />
+                <!-- Invalid Contact Number and Or Password Warning -->
+                <p
+                  *ngIf="!contactNo.valid && contactNo.dirty"
+                  class="message error-message"
+                >
+                  Invalid user id or password
+                </p>
+              </div>
+  
+              <div class="form-group">
+                <input
+                  type="password"
+                  autocomplete="off"
+                  name="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  [(ngModel)]="loginObj.userPassword"
+                  #password="ngModel"
+                  pattern="(?=^.{8,}$).*$"
+                  required
+                />
+              </div>
+              <div class="row mb-4">
                 <div class="col">
                         <div class="form-check">
                             <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -30,7 +76,102 @@
                     <a class="ml-auto">Don't have a account?</a>
                 </div>
             </div>
-            <button class="btn btn-primary sign-button" type="submit">Sign In</button>
-        </form>
+              <!-- Form Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-success primary-color form-control"
+                [disabled]="
+                  loginF.form.invalid || contactNo.invalid || password.invalid
+                "
+              >
+                Login
+              </button>
+              
+            
+            </form>
+            <!-- Login Form End -->
+  
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  
+  <p *ngIf="resFalse" class="invalid-credentials">
+    <span>&#10007;</span> &nbsp;Invalid Credentials
+  </p>
+  <!-- <p *ngIf="resFalse" class="valid-credentials"><span>&#10007;</span> &nbsp;Please login Again </p> -->
+  
+  
+  <!-- /************************************
+            OTP MODEL 
+  ************************************/ -->
+  <!-- MODEL FOR OTP -->
+  <div id="otpModel" *ngIf="loginAuthorized">
+    <!-- Model Close Button -->
+    <span id="close" (click)="closeOTPmodel()">&#10008;</span>
+    <!-- Model Body  -->
+    <div id="model-body">
+      <h4 class="title">Verify OTP</h4>
+      <hr/>
+  
+      <!-- OTP FORM -->
+      <div id="otp-form">
+        <form
+          (ngSubmit)="otpForm.form.valid && otpVerification(otpForm.form)"
+          #otpForm="ngForm"
+          novalidate
+        >
+          <div *ngIf="!secretKeyStatus">
+            <div id="qr-code">
+              <div id="img-wrapper">
+                <img src="{{ QRImage }}" alt="QR Code" />
+              </div>
+            </div>
+            <div class="form-group" id="secret-key">
+              <label for="">Secret Key</label>
+              <div class="secretkey">
+                {{ loginRes.otpSecretKey }}
+              </div>
+              <span
+                class="click-board"
+                (click)="copySecretKey(loginRes.otpSecretKey)"
+                >&#10064;</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="">Type your OTP</label>
+            <input
+              type="text"
+              autocomplete="on"
+              name="otpNumber"
+              id="otp"
+              class="form-control"
+              placeholder="Type One Time Password"
+              [(ngModel)]="loginRes.otpToken"
+              #otp="ngModel"
+              min="9"
+              max="99"
+              pattern="^[0-9]*$"
+              required
+            />
+  
+            <!-- Invalid OTP warning message -->
+            <p *ngIf="!otp.valid || invalidOtp" class="message error-message">
+              Invalid otp, Please type verified otp
+            </p>
+          </div>
+          <!-- submit OTP FORm Button -->
+          <button
+            type="submit"
+            class="btn btn-success primary-color form-control"
+            [disabled]="otpForm.form.invalid || otp.invalid"
+          >
+            Verify
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- MODEL END -->
